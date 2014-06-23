@@ -1,1 +1,1 @@
-http://alignedleft.com/tutorials/d3/scales
+http://alignedleft.com/tutorials/d3/axes
