@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>D3 Test</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</script>
+</head>
+
+<body>
+
+<style type="text/css">
+div.bar {
+ width: 20px;
+height: 20px;
+margin-top: 2px;
+background-color: darkblue;
+color: white;
+font: 10px sans-serif;
+text-align: right;
+padding: 2px;
+}
+</style>
+
+<script type="text/javascript">
+    // cluster radius
+    var radius = 620 / 2;
+
+    // tree layout
+    var tree = d3.layout.tree()
+        .size([360, radius - 120])
+        .separation(function(a, b)
+                    {return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+    var diagonal = d3.svg.diagonal.radial()
+        .projection(function(d) {return [d.y, d.x / 180 * Math.PI];});
+
+    // svg zeichenfläche
+    var vis = d3.select("body").append("svg")
+        .attr("width", radius * 2)
+        .attr("height", radius * 2)
+        .append("g")
+        .attr("transform", "translate(" + radius + ", " + radius + ")" );
+    
+    // einlesen der JSON datei
+    d3.json("city_spendings.json", function(json) {
+        var nodes=tree.nodes(json);
+    
+        // Zeichnen der verbindungen
+        var link = vis.selectAll("path.link")
+            .data(tree.links(nodes))
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", diagonal);
+        
+        // zeichnen der cluster
+        var node = vis.selectAll("g.node")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d)
+                  {return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";})
+    
+        node.append("circle")
+            .attr("r", function(d) {return d.size/15000;});
+        
+        node.append("text")
+            .attr("dx", function(d) {return d.x < 180 ? 25 : -25;})
+            .attr("dy", ".31em")
+            .attr("text-anchor", function(d) {return d.x < 180 ? "start" : "end";})
+            .attr("transform", function(d) {return d.x < 180 ? null : "rotate(180)";})
+            .text(function(d) {return d.name;});
+        
+    });
+        
+</script>
+<div style="display: inline-block;
+   width: 10px;
+  height: 10px
+  background-color: blue;">
+</div>
+</body> </html>
