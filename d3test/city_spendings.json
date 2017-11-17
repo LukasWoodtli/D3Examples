@@ -4,6 +4,7 @@
 "children" : [
     {"name" : "Frankfurt am Main", "size":300644 }, 
     {"name" : "Berlin", "size":  132084 },
-    {"name" : "Hamburg", "size": 130244 }
+    {"name" : "Hamburg", "size": 130244 },
+    {"name" : "Zürich", "size": 129475 }
     ]
 }
